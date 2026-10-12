@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f8f5fc">
+<meta name="description" content="מערכת מחוננים — יום שלישי, כיתות ד׳, סמסטר א׳, תשפ״ז">
+<title>מערכת מחוננים | יום שלישי | כיתות ד׳ | תשפ״ז</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #2d263b; --muted:#695e75; --purple:#883c99; --purple-deep:#6f2a83; --violet-pale:#f3e9f8; --surface:#ffffff; --gap:clamp(3px,.5vw,10px); }
+  *{ box-sizing:border-box; }
+  html,body { margin:0; width:100%; height:100%; overflow:hidden; }
+  body { font-family:'Rubik',Arial,sans-serif; background:radial-gradient(ellipse at 80% 0%,#f2e9f7 0%,transparent 49%),linear-gradient(145deg,#fcfafc,#f3f3fb); color:var(--ink); -webkit-font-smoothing:antialiased; }
+  button { font-family:inherit; }
+  .board { width:100%; height:100vh; height:100dvh; min-height:0; display:grid; grid-template-rows:minmax(0,9fr) minmax(0,8fr) minmax(0,24fr) minmax(0,5fr) minmax(0,24fr) minmax(0,5fr) minmax(0,24fr); gap:var(--gap); padding:clamp(8px,1.1vw,22px); }
+  .topbar{ min-height:0; display:flex; align-items:center; justify-content:center; position:relative; padding-inline:clamp(30px,3.5vw,70px); }
+  h1 { margin:0; color:var(--purple-deep); font-size:clamp(17px,2.05vw,42px); font-weight:900; line-height:1.15; letter-spacing:-.055em; text-align:center; text-wrap:balance; white-space:nowrap; }
+  .topbar .button-fullscreen { position:absolute; inset-inline-end:0; top:50%; transform:translateY(-50%); display:grid; place-items:center; width:clamp(25px,2.8vw,50px); height:clamp(25px,2.8vw,50px); background:white; border:1px solid #e9deed; border-radius:14px; color:#844697; cursor:pointer; box-shadow:0 3px 12px #49325312; }
+  .button-fullscreen svg { width:53%; height:53%; }
+  .button-fullscreen:hover { background:#f5eaf9; }
+  .gridline { direction:rtl; display:grid; grid-template-columns:minmax(95px,9.4fr) repeat(6,minmax(0,12fr)); gap:var(--gap); min-height:0; }
+  .gridline > * { min-width:0; min-height:0; }
+  .headings { align-items:stretch; }
+  .class-title { border:1px solid #e5d3ec; border-radius:clamp(8px,.8vw,16px); background:linear-gradient(180deg,#fff,#faf5fc); color:#803a94; font-size:clamp(16px,1.75vw,35px); font-weight:900; text-align:center; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 9px #5d397812; }
+  .spacer-heading { display:flex; align-items:center; justify-content:center; text-align:center; color:#875595; font-size:clamp(11px,1vw,18px); font-weight:800; }
+  .lesson-row { align-items:stretch; }
+  .time-cell { border-radius:clamp(9px,.9vw,17px); display:flex; flex-direction:column; justify-content:center; align-items:center; background:linear-gradient(150deg,#e9dbf0,#f8f0fc); border:1px solid #dfcae9; color:#77358c; box-shadow:0 2px 10px #6f45750c; text-align:center; padding:2px; gap:clamp(1px,.2vw,4px); }
+  .time-cell .time-label { font-size:clamp(9px,.77vw,15px); font-weight:700; opacity:.85; }
+  .time-cell .start,.time-cell .end { font-size:clamp(13px,1.45vw,28px); font-weight:900; line-height:1.06; font-variant-numeric:tabular-nums; direction:ltr; }
+  .time-cell .dash { height:2px; width:25%; border-radius:5px; background:#bb8bc8; }
+  .lesson { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(2px,.4vw,9px); text-align:center; padding:clamp(3px,.5vw,12px); border:1px solid var(--stroke); border-radius:clamp(9px,.9vw,19px); background:linear-gradient(155deg,#fff 35%,var(--tint) 150%); box-shadow:0 3px 12px #3c2b5513; color:var(--ink); cursor:zoom-in; min-width:0; min-height:0; overflow:hidden; transition:box-shadow .2s, transform .2s, border-color .2s; }
+  .lesson::before { content:""; position:absolute; height:clamp(3px,.35vw,7px); width:42%; top:0; inset-inline:0; margin:auto; border-radius:0 0 11px 11px; background:var(--accent); opacity:.86; }
+  .lesson:hover,.lesson:focus-visible { transform:translateY(-2px); box-shadow:0 8px 22px #33254a27; border-color:var(--accent); z-index:2; outline:none; }
+  .lesson-title { font-size:clamp(12px,1.34vw,26px); line-height:1.18; font-weight:900; color:var(--accent); letter-spacing:-.03em; overflow-wrap:break-word; }
+  .lesson-teacher { font-size:clamp(11px,1.21vw,23px); line-height:1.16; font-weight:600; color:#34293c; }
+  .lesson-room { font-size:clamp(10px,1.14vw,22px); line-height:1.18; font-weight:500; color:#5f536b; padding:clamp(1px,.16vw,3px) clamp(3px,.3vw,7px); border-radius:8px; background:#ffffffac; }
+  .break-row { align-items:stretch; }
+  .break-time { display:flex; justify-content:center; align-items:center; background:#f4eaf7; border:1px solid #e6d9eb; color:#7c4490; border-radius:clamp(7px,.7vw,14px); font-size:clamp(10px,.99vw,19px); font-weight:800; direction:ltr; font-variant-numeric:tabular-nums; letter-spacing:-.025em; }
+  .break-banner { grid-column:span 6; display:flex; justify-content:center; align-items:center; gap:clamp(4px,.65vw,13px); border-radius:clamp(7px,.7vw,14px); background:linear-gradient(90deg,#f8eefb,#efe4f7,#f8eefb); border:1px solid #eadcf0; color:#9344a4; font-size:clamp(12px,1.32vw,27px); font-weight:900; }
+  .break-banner:before,.break-banner:after{ content:""; width:clamp(10px,2.2vw,45px); height:2px; background:#c79bd3; border-radius:4px; }
+  .modal-backdrop { position:fixed; inset:0; z-index:10; background:#170d26bd; backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:4vw; }
+  .modal-backdrop[hidden] { display:none; }
+  .detail { width:min(95vw,750px); max-height:90dvh; position:relative; padding:clamp(25px,4vw,64px); background:linear-gradient(160deg,#fff 35%,var(--tint) 160%); border:3px solid var(--accent); border-radius:clamp(20px,2vw,32px); box-shadow:0 30px 80px #110d255c; display:flex; flex-direction:column; align-items:center; text-align:center; gap:clamp(9px,1.4vw,23px); }
+  .detail .detail-class { font-weight:800; color:#744384; font-size:clamp(20px,2vw,32px); }
+  .detail .detail-title { font-size:clamp(34px,4vw,70px); color:var(--accent); font-weight:900; line-height:1.08; }
+  .detail .detail-teacher { font-size:clamp(24px,2.75vw,48px); color:#403347; font-weight:700; }
+  .detail .detail-room { font-size:clamp(23px,2.5vw,41px); color:#5d5164; font-weight:500; }
+  .detail .detail-time { padding:10px 22px; background:#ffffffdc; border-radius:15px; color:#7a398c; font-size:clamp(20px,2vw,32px); font-weight:700; direction:ltr; }
+  .close { position:absolute; left:clamp(12px,1.6vw,27px); top:clamp(12px,1.6vw,27px); border:0; background:#ece6ef; width:clamp(35px,3.3vw,52px); height:clamp(35px,3.3vw,52px); border-radius:50%; font-size:clamp(22px,2vw,34px); cursor:pointer; color:#703581; }
+  @media (max-aspect-ratio: 1.35) { h1 { white-space:normal; font-size:clamp(13px,2.05vw,28px); } .board { gap:3px; padding:4px; } .lesson { gap:1px; padding:2px; } .lesson-title{font-size:clamp(8px,1.15vw,17px)} .lesson-teacher,.lesson-room{font-size:clamp(7px,1vw,15px)} .gridline{grid-template-columns:minmax(58px,9.4fr) repeat(6,minmax(0,12fr));gap:3px;} .time-cell .start,.time-cell .end{font-size:clamp(10px,1.1vw,19px)} }
+  @media (max-height: 520px) { .lesson { gap:1px; } .lesson::before{height:2px;} .lesson-room { padding:0; } .class-title{font-size:clamp(12px,1.4vw,24px);} }
+  @media (prefers-reduced-motion:reduce) { .lesson { transition:none; } }
+</style>
+</head>
+<body>
+<main class="board" id="board" aria-label="מערכת מחוננים יום שלישי לכיתות ד׳">
+  <header class="topbar">
+    <h1>מערכת מחוננים יום שלישי – כיתות ד׳ – סמסטר א׳ – תשפ״ז</h1>
+    <button class="button-fullscreen" id="fullscreen" type="button" title="מסך מלא" aria-label="הצג במסך מלא">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/></svg>
+    </button>
+  </header>
+  <div class="gridline headings" id="headings" aria-label="כיתות"></div>
+</main>
+<div class="modal-backdrop" id="modal" hidden role="presentation">
+  <section class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <button type="button" class="close" id="closeModal" aria-label="סגירה">×</button>
+    <div class="detail-class" id="detailClass"></div>
+    <div class="detail-title" id="detailTitle"></div>
+    <div class="detail-teacher" id="detailTeacher"></div>
+    <div class="detail-room" id="detailRoom"></div>
+    <div class="detail-time" id="detailTime"></div>
+  </section>
+</div>
+<script>
+'use strict';
+// אפשר לעדכן שמות, מורים, חדרים ואת סדר החוגים בקובץ זה.
+const courses = {
+  leonardo:  {title:'קוד לאונרדו',        teacher:'ענת ידלין',      room:'מעבדה 5',          accent:'#275da3', tint:'#e9f2ff', stroke:'#dbe6f7'},
+  theater:   {title:'תיאטרון',             teacher:'שושי חפץ',       room:'אודיטוריום',       accent:'#993a81', tint:'#fae9f3', stroke:'#f1d8e7'},
+  creative:  {title:'יצירתיות פלוס',       teacher:'טללית קופורטי', room:'חדר אלקטרוניקה',   accent:'#7843ab', tint:'#f1eaff', stroke:'#e7d9f7'},
+  cyber:     {title:'סייבר',               teacher:'איציק חיים',     room:'חדר מחשבים 2',    accent:'#0a7882', tint:'#e3f6f6', stroke:'#d1edec'},
+  astronomy: {title:'אסטרונומיה',         teacher:'משה ברוקר',      room:'מעבדה 6',          accent:'#32734e', tint:'#e9f7ec', stroke:'#d8eddc'},
+  riddles:   {title:'חידות וחדרי בריחה',  teacher:'נתי מנצור',      room:'חדר טכנולוגיה',   accent:'#a65417', tint:'#fff1e0', stroke:'#f7e2c9'}
+};
+// סדר הכיתות בכל רצועה מימין לשמאל: ד׳1 עד ד׳6.
+// הערה: בתמונת המקור הרצועה השנייה מסתיימת ב-11:50 אך ההפסקה מתחילה ב-11:45.
+const schedule = [
+  {from:'8:30',  to:'10:00', groups:['leonardo','theater','creative','cyber','astronomy','riddles']},
+  {break:true, from:'10:00',to:'10:30'},
+  {from:'10:30',to:'11:50', groups:['theater','creative','leonardo','astronomy','riddles','cyber']},
+  {break:true, from:'11:45',to:'12:00'},
+  {from:'12:00',to:'13:30', groups:['creative','leonardo','theater','riddles','cyber','astronomy']}
+];
+const board=document.getElementById('board');
+const headings=document.getElementById('headings');
+const create=(tag,cls,text) => {const el=document.createElement(tag); if(cls)el.className=cls;if(text!==undefined)el.textContent=text; return el;};
+headings.append(create('div','spacer-heading','שעות'));
+for(let i=1;i<=6;i++) headings.append(create('div','class-title',`ד׳${i}`));
+let lastFocus=null;
+const modal=document.getElementById('modal');
+const detail=document.getElementById('detail');
+function closeDetail(){modal.hidden=true; if(lastFocus)lastFocus.focus();}
+function openDetail(course,group,lesson,button){
+  lastFocus=button;
+  detail.style.setProperty('--accent',course.accent);
+  detail.style.setProperty('--tint',course.tint);
+  document.getElementById('detailClass').textContent=`כיתה ד׳${group}`;
+  document.getElementById('detailTitle').textContent=course.title;
+  document.getElementById('detailTeacher').textContent=course.teacher;
+  document.getElementById('detailRoom').textContent=course.room;
+  document.getElementById('detailTime').textContent=`${lesson.from} – ${lesson.to}`;
+  modal.hidden=false;
+  document.getElementById('closeModal').focus();
+}
+for(const lesson of schedule){
+  const row=create('div',`gridline ${lesson.break?'break-row':'lesson-row'}`);
+  if(lesson.break){
+    const time=create('div','break-time',`${lesson.from} – ${lesson.to}`);
+    const banner=create('div','break-banner','הפסקה');
+    row.append(time,banner);
+  } else {
+    const time=create('div','time-cell');
+    time.append(create('span','time-label','שעות לימוד'),create('span','start',lesson.from),create('span','dash'),create('span','end',lesson.to));
+    row.append(time);
+    lesson.groups.forEach((key,index)=>{
+      const course=courses[key];
+      const cell=create('button','lesson');
+      cell.type='button';
+      cell.style.setProperty('--accent',course.accent);
+      cell.style.setProperty('--tint',course.tint);
+      cell.style.setProperty('--stroke',course.stroke);
+      cell.setAttribute('aria-label',`כיתה ד׳${index+1}, ${lesson.from} עד ${lesson.to}: ${course.title}, ${course.teacher}, ${course.room}. לחצו להגדלה`);
+      cell.append(create('span','lesson-title',course.title),create('span','lesson-teacher',course.teacher),create('span','lesson-room',course.room));
+      cell.addEventListener('click',()=>openDetail(course,index+1,lesson,cell));
+      row.append(cell);
+    });
+  }
+  board.append(row);
+}
+document.getElementById('closeModal').addEventListener('click',closeDetail);
+modal.addEventListener('click',e=>{if(e.target===modal)closeDetail()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeDetail()});
+document.getElementById('fullscreen').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.()});
+// להטמעה אפשר להוסיף ?embed=1 לכתובת, כדי להסתיר את כפתור המסך המלא.
+if(new URLSearchParams(location.search).get('embed')==='1')document.getElementById('fullscreen').hidden=true;
+</script>
+<style>.button-fullscreen[hidden]{display:none}</style>
+</body>
+</html>
